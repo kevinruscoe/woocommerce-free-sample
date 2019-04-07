@@ -1,6 +1,16 @@
 <?php
 
 /**
+ * The key to determine if a product is a sample.
+ * 
+ * @return string
+ */
+function sample_meta_key()
+{
+    return '_is_a_sample';
+}
+
+/**
  * How manage samples are allowed in the cart?
  * 
  * @return int
@@ -24,7 +34,7 @@ function has_maxed_out_sample_allowance()
     $samples = array_filter(
         $cartContents,
         function ($cartItem) {
-            return get_post_meta($cartItem['product_id'], '_is_sample');
+            return get_post_meta($cartItem['product_id'], sample_meta_key());
         }
     );
 
@@ -51,7 +61,7 @@ add_action(
     function ($removedCartItemKey, $cart) {
         $sampleId = $cart->cart_contents[$removedCartItemKey]['product_id'];
 
-        if (get_post_meta($sampleId, '_is_a_sample')) {
+        if (get_post_meta($sampleId, sample_meta_key())) {
             wp_delete_post($sampleId);
         }
     },
@@ -67,7 +77,7 @@ add_action(
     function ($cartItemKey) {
         $sampleId = WC()->cart->cart_contents[$cartItemKey]['product_id'];
         
-        if (get_post_meta($sampleId, '_is_a_sample')) {
+        if (get_post_meta($sampleId, sample_meta_key())) {
             wp_delete_post($sampleId);
         }
     },
@@ -127,7 +137,7 @@ add_action(
             $sampleProduct->save();
             
             // Set meta so we can delete it later.
-            add_post_meta($sampleProduct->get_id(), '_is_a_sample', true);
+            add_post_meta($sampleProduct->get_id(), sample_meta_key(), true);
 
             // Hide it from the site.
             wp_set_object_terms(
@@ -145,7 +155,7 @@ add_action(
                 null, 
                 [
                     'parent_id' => $baseProduct->get_id(),
-                    'is_a_sample' => true
+                    sample_meta_key() => true
                 ]
             );
 
@@ -197,7 +207,7 @@ function delete_samples_after_order_dealt_with($orderId)
         $product = $item->get_product();
 
         // delete samples
-        if (get_post_meta($product->get_id(), '_is_a_sample')) {
+        if (get_post_meta($product->get_id(), sample_meta_key())) {
             wp_delete_post($product->get_id());
         }
     }
@@ -219,8 +229,11 @@ add_action(
         global $typenow, $wpdb;
 
         $sampleIds = $wpdb->get_results(
-            "select distinct post_id from wp_postmeta ".
-            "where meta_key = '_is_a_sample' and meta_value = 1",
+            sprintf(
+                "select distinct post_id from wp_postmeta ".
+                "where meta_key = '%s' and meta_value = 1",
+                sample_meta_key()
+            ),
             ARRAY_A
         );
 
