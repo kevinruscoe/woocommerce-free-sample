@@ -31,7 +31,7 @@ function sample_charge_if_needed()
 }
 
 /**
- * Registed the 'add-sample' template just
+ * Registed the 'add-sample-button' template just
  * after the add-to-cart form.
  */
 add_action(
@@ -70,8 +70,7 @@ add_action(
             wp_delete_post($sampleId);
         }
     },
-    5,
-    1
+    5
 );
 
 /**
@@ -243,7 +242,7 @@ add_action(
 );
 
 /**
- * If 
+ * If we need to charge for samples.
  */
 add_action(
     'woocommerce_cart_calculate_fees',
