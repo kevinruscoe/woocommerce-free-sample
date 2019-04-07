@@ -37,7 +37,7 @@ function sample_charge_if_needed()
 add_action(
     'woocommerce_after_add_to_cart_form',
     function () {
-        get_template_part(basename(dirname(__FILE__)) . '/add-sample-button');
+        get_template_part(basename(dirname(__FILE__)) . '/templates/add-sample-button');
     }
 );
 

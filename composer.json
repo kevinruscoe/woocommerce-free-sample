@@ -1,0 +1,8 @@
+{
+    "name": "kevinruscoe/woocommerce-request-sample-product",
+    "autoload": {
+        "files": [
+            "woocommerce-request-sample-product.php"
+        ]
+    }
+}
