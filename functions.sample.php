@@ -48,7 +48,7 @@ function has_maxed_out_sample_allowance()
 add_action(
     'woocommerce_after_add_to_cart_form',
     function () {
-        get_template_part('add-sample');
+        get_template_part(basename(dirname(__FILE__)) . '/add-sample-button');
     }
 );
 
