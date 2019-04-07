@@ -11,34 +11,23 @@ function sample_meta_key()
 }
 
 /**
- * How manage samples are allowed in the cart?
+ * How many FREE samples are allowed in the cart?
  * 
  * @return int
  */
-function allowed_max_samples()
+function only_free_up_to()
 {
     return 2;
 }
 
 /**
- * Have we reached the limit of allowed samples?
+ * The price of the samples if they need to be charged.
  * 
- * @return bool
+ * @return float
  */
-function has_maxed_out_sample_allowance()
+function sample_charge_if_needed()
 {
-    $maxSamples = allowed_max_samples();
-
-    $cartContents = WC()->cart->get_cart_contents();
-
-    $samples = array_filter(
-        $cartContents,
-        function ($cartItem) {
-            return get_post_meta($cartItem['product_id'], sample_meta_key());
-        }
-    );
-
-    return (count($samples) >= $maxSamples);
+    return 5.00;
 }
 
 /**
@@ -249,6 +238,34 @@ add_action(
             );
 
             return;
+        }
+    }
+);
+
+/**
+ * If 
+ */
+add_action(
+    'woocommerce_cart_calculate_fees',
+    function ($cart) {
+
+        // How many samples are in the cart?
+        $amountOfSamplesInCart = count(
+            array_filter(
+                $cart->get_cart_contents(), 
+                function ($item) {
+                    return $item[sample_meta_key()] == true;
+                }
+            )
+        );
+
+        if ($amountOfSamplesInCart > only_free_up_to()) {
+            $cart->add_fee(
+                'Sample Service', 
+                sample_charge_if_needed(), 
+                true, 
+                'standard'
+            );
         }
     }
 );

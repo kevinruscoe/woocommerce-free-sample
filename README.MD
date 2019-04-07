@@ -6,7 +6,8 @@ Basically, it adds a button after the "add to cart" button that:
 - Adds it to the cart
 - Hides it from the admin-grid (to prevent noise)
 
-The customer is limited to X amount of samples (see `functions.sample.php@allowed_max_samples()`).
+The customer is limited to X amount of free samples (see `functions.sample.php@only_free_up_to()`).
+If they add more than X they are charged `functions.sample.php@sample_charge_if_needed()`
 
 Another couple of things:
 
