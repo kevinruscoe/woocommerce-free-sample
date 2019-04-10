@@ -7,7 +7,7 @@
  */
 function sample_meta_key()
 {
-    return '_is_a_sample';
+    return '_is_sample';
 }
 
 /**
@@ -266,5 +266,33 @@ add_action(
                 'standard'
             );
         }
+    }
+);
+
+/**
+ * Add a checkbox on the product admin for '_has_sample'.
+ */
+add_action(
+    'woocommerce_product_options_reviews',
+    function () {
+        woocommerce_wp_checkbox([
+            'label' => 'Enable sample',
+            'id' => '_has_sample',
+        ]);
+    }
+);
+
+/**
+ * Update '_is_sample' meta key.
+ */
+add_action(
+    'woocommerce_process_product_meta',
+    function ($postId) {
+        $product = wc_get_product($postId);
+        $product->update_meta_data(
+            '_has_sample',
+            isset($_POST['_has_sample']) ? 'yes' : 'no'
+        );
+        $product->save();
     }
 );
