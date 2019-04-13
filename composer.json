@@ -2,7 +2,10 @@
     "name": "kevinruscoe/woocommerce-request-sample-product",
     "autoload": {
         "files": [
-            "woocommerce-request-sample-product.php"
+            "src/woocommerce-request-sample-product.php"
         ]
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.4"
     }
 }
