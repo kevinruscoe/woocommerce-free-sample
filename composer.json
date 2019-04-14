@@ -4,8 +4,5 @@
         "files": [
             "src/woocommerce-request-sample-product.php"
         ]
-    },
-    "require-dev": {
-        "squizlabs/php_codesniffer": "^3.4"
     }
 }

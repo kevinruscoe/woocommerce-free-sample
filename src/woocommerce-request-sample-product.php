@@ -7,6 +7,91 @@
  */
 
 /**
+ * Adds a new tab to the admin product data panel.
+ */
+add_filter(
+	'woocommerce_product_data_tabs',
+	function ( $default_tabs ) {
+		$default_tabs['product_sample'] = array(
+			'label'    => 'Sample Product',
+			'target'   => 'product_sample_tab_data',
+			'priority' => 100,
+		);
+		return $default_tabs;
+	}
+);
+
+/**
+ * Displays the new tab on the admin product data panel.
+ */
+add_action(
+	'woocommerce_product_data_panels',
+	function () {
+		?>
+		<div id="product_sample_tab_data" class="panel woocommerce_options_panel">
+			<?php
+			woocommerce_wp_checkbox(
+				[
+					'label' => 'Enable sample',
+					'id'    => '_has_sample',
+				]
+			)
+			?>
+		</div>
+		<?php
+	}
+);
+
+
+/**
+ * Create the general admin section beneath the products tab
+ */
+add_filter(
+	'woocommerce_get_sections_products',
+	function ( $sections ) {
+		$sections['sample'] = 'Sample Product';
+		return $sections;
+	}
+);
+
+/**
+ * Add settings to the specific section we created before
+ */
+add_filter(
+	'woocommerce_get_settings_products',
+	function ( $settings, $current_section ) {
+		if ( 'sample' === $current_section ) {
+			return [
+				[
+					'name' => 'Sample Product Settings',
+					'type' => 'title',
+				],
+				[
+					'name' => 'How many free samples are allowed?',
+					'id'   => 'sample_free_up_to',
+					'type' => 'number',
+				],
+				[
+					'name'              => 'How much is the flat rate for paid samples?',
+					'id'                => 'sample_fee',
+					'type'              => 'number',
+					'custom_attributes' => [
+						'step' => '0.01',
+					],
+				],
+				[
+					'type' => 'sectionend',
+					'id'   => 'sample',
+				],
+			];
+		}
+		return $settings;
+	},
+	10,
+	2
+);
+
+/**
  * The key to determine if a product is a sample.
  *
  * @return string
@@ -21,7 +106,7 @@ function sample_meta_key() {
  * @return int
  */
 function only_free_up_to() {
-	return 2;
+	return get_option( 'sample_free_up_to' );
 }
 
 /**
@@ -30,7 +115,7 @@ function only_free_up_to() {
  * @return float
  */
 function sample_charge_if_needed() {
-	return 5.00;
+	return get_option( 'sample_fee' );
 }
 
 /**
@@ -61,16 +146,16 @@ add_action(
 			return;
 		}
 		?>
-			<form
-				id='add-sample-form' 
-				action='<?php the_permalink(); ?>' 
-				method='post'>
-				<?php wp_nonce_field( 'add_sample_to_cart' ); ?>
-				<input 
-					type='hidden' 
-					name='product_id' 
-					value="<?php print esc_html( wc_get_product()->get_id() ); ?>">
-			</form>
+		<form
+			id='add-sample-form' 
+			action='<?php the_permalink(); ?>' 
+			method='post'>
+			<?php wp_nonce_field( 'add_sample_to_cart' ); ?>
+			<input 
+				type='hidden' 
+				name='product_id' 
+				value="<?php print esc_html( wc_get_product()->get_id() ); ?>">
+		</form>
 		<?php
 	}
 );
@@ -88,12 +173,12 @@ function render_add_sample_button() {
 		$additional_attributes = "disabled='disabled' class='button alt disabled'";
 	}
 	?>
-		<button
-			type='submit'
-			form='add-sample-form' 
-			<?php print esc_html( $additional_attributes ); ?>>
-			Add Sample
-		</button>
+	<button
+		type='submit'
+		form='add-sample-form' 
+		<?php print esc_html( $additional_attributes ); ?>>
+		Add Sample
+	</button>
 	<?php
 }
 
@@ -104,7 +189,6 @@ add_action(
 	'woocommerce_after_add_to_cart_button',
 	'render_add_sample_button'
 );
-
 
 /**
  * If we remove a sample from the cart, we want to
@@ -326,21 +410,6 @@ add_action(
 				'standard'
 			);
 		}
-	}
-);
-
-/**
- * Add a checkbox on the product admin for '_has_sample'.
- */
-add_action(
-	'woocommerce_product_options_reviews',
-	function () {
-		woocommerce_wp_checkbox(
-			[
-				'label' => 'Enable sample',
-				'id'    => '_has_sample',
-			]
-		);
 	}
 );
 
