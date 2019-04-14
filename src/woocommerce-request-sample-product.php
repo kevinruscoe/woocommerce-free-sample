@@ -6,6 +6,6 @@
  * @author Kevin Ruscoe
  */
 
-require 'admin.php';
-require 'helpers.php';
-require 'frontend.php';
+require_once 'admin.php';
+require_once 'helpers.php';
+require_once 'frontend.php';
