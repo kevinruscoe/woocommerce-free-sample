@@ -6,6 +6,6 @@
  * @author Kevin Ruscoe
  */
 
-require_once 'admin.php';
-require_once 'helpers.php';
-require_once 'frontend.php';
+require_once 'woocommerce-request-sample-product.admin.php';
+require_once 'woocommerce-request-sample-product.helpers.php';
+require_once 'woocommerce-request-sample-product.frontend.php';
