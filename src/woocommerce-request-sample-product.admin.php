@@ -76,38 +76,18 @@ add_action(
 );
 
 /**
- * Adds a new tab named 'Sample Product' to the admin product data panel.
- */
-add_filter(
-	'woocommerce_product_data_tabs',
-	function ( $default_tabs ) {
-		$default_tabs['product_sample'] = array(
-			'label'    => 'Sample Product',
-			'target'   => 'product_sample_tab_data',
-			'priority' => 100,
-		);
-		return $default_tabs;
-	}
-);
-
-/**
- * Displays content in the 'Sample Product' new tab.
+ * Displays a new field in the "Advanced" tab.
  */
 add_action(
-	'woocommerce_product_data_panels',
+	'woocommerce_product_options_advanced',
 	function () {
-		?>
-		<div id="product_sample_tab_data" class="panel woocommerce_options_panel">
-			<?php
-			woocommerce_wp_checkbox(
-				[
-					'label' => 'Enable sample',
-					'id'    => '_has_sample',
-				]
-			)
-			?>
-		</div>
-		<?php
+		woocommerce_wp_checkbox(
+			[
+				'label' => 'Enable sample',
+				'name'  => '_has_sample',
+				'id'    => '_has_sample',
+			]
+		);
 	}
 );
 
@@ -126,11 +106,6 @@ add_action(
 
 		global $typenow, $wpdb;
 
-		$sql = $wpdb->prepare(
-			'select distinct post_id from wp_postmeta ' .
-			'where meta_key = %s and meta_value = 1',
-			sample_meta_key()
-		);
 		// @codingStandardsIgnoreLine
 		$sample_ids = $wpdb->get_results(
 			$wpdb->prepare(
