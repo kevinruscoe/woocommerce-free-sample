@@ -1,6 +1,6 @@
 <?php
 /**
- * Frontend for Request Sample Products.
+ * Frontend for woocommerce-request-sample-product
  *
  * @package woocommerce-request-sample-product
  * @author Kevin Ruscoe
