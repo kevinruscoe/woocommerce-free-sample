@@ -100,7 +100,7 @@ add_action(
 	'pre_get_posts',
 	function ( $query ) {
 
-		if ( ! is_admin() && ! is_main_query() ) {
+		if ( ! is_admin() && ! $query->is_main_query() ) {
 			return;
 		}
 
