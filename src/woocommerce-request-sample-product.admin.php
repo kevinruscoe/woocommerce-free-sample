@@ -60,7 +60,7 @@ add_filter(
 add_action(
 	'woocommerce_process_product_meta',
 	function ( $post_id ) {
-		if ( isset( $_POST['woocommerce_meta_nonce'], $_POST['_has_sample'] ) ) {
+		if ( isset( $_POST['woocommerce_meta_nonce'] ) ) {
 			if ( ! wp_verify_nonce( sanitize_key( $_POST['woocommerce_meta_nonce'] ), 'woocommerce_save_data' ) ) {
 				exit;
 			}
