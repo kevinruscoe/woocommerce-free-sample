@@ -212,6 +212,10 @@ function already_in_cart( int $product_id ) {
 		array_filter(
 			WC()->cart->get_cart_contents(),
 			function ( $item ) use ( $product_id ) {
+				if ( ! isset( $item['parent_id'] ) ) {
+					return false;
+				}
+
 				return $item['parent_id'] === $product_id;
 			}
 		)
