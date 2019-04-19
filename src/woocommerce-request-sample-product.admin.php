@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin for Request Sample Products.
+ * Admin for woocommerce-request-sample-product
  *
  * @package woocommerce-request-sample-product
  * @author Kevin Ruscoe
