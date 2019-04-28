@@ -17,10 +17,10 @@ add_action(
 		}
 		?>
 		<form
-			id='add-sample-form' 
+			id='add-sample-to-cart' 
 			action='<?php the_permalink(); ?>' 
 			method='post'>
-			<?php wp_nonce_field( 'add_sample_to_cart' ); ?>
+			<?php wp_nonce_field( 'add_sample_to_cart', '_wc_request_sample_product_nonce' ); ?>
 			<input 
 				type='hidden' 
 				name='product_id' 
@@ -45,7 +45,7 @@ function render_add_sample_button() {
 	?>
 	<button
 		type='submit'
-		form='add-sample-form' 
+		form='add-sample-to-cart' 
 		<?php print esc_html( $additional_attributes ); ?>>
 		Add Sample
 	</button>
@@ -99,8 +99,8 @@ add_action(
 add_action(
 	'woocommerce_cart_loaded_from_session',
 	function () {
-		if ( isset( $_POST['product_id'], $_POST['_wpnonce'] ) ) {
-			if ( ! wp_verify_nonce( sanitize_key( $_POST['_wpnonce'] ), 'add_sample_to_cart' ) ) {
+		if ( isset( $_POST['product_id'], $_POST['_wc_request_sample_product_nonce'] ) ) {
+			if ( ! wp_verify_nonce( sanitize_key( $_POST['_wc_request_sample_product_nonce'] ), 'add_sample_to_cart' ) ) {
 				exit;
 			}
 
