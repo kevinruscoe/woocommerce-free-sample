@@ -1,8 +1,8 @@
 {
-    "name": "kevinruscoe/woocommerce-request-sample-product",
-    "autoload": {
-        "files": [
-            "src/woocommerce-request-sample-product.php"
-        ]
+    "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "*",
+        "object-calisthenics/phpcs-calisthenics-rules": "*",
+        "phpcompatibility/php-compatibility": "*",
+        "wp-coding-standards/wpcs": "*"
     }
 }
