@@ -108,18 +108,36 @@ add_filter(
 	2
 );
 
+add_filter(
+	'wp_head',
+	function() {
+		?>
+			<style>
+				.single_add_sample_to_cart_button {
+					padding-top: 1.55rem;
+					padding-bottom: 1.59rem;
+					font-size: 1.6rem;
+				}
+			</style>
+		<?php
+	}
+);
+
 /**
- * Adds a button.
- *
  * WC now adds the action to the "add to cart" button, so we need a hidden field to mimick it's functionality. As well as add our new button.
  */
 add_action(
 	'woocommerce_after_add_to_cart_button',
 	function () {
+		if ( wc_get_product()->get_meta( 'allow_sample' ) !== 'yes' ) {
+			return;
+		}
+
 		?>
 			<button 
 				type='submit' 
 				name="add-sample-to-cart" 
+				class="single_add_sample_to_cart_button button alt"
 				value="<?php print esc_html( wc_get_product()->get_id() ); ?>">
 				Add Sample
 			</button>
@@ -226,7 +244,7 @@ add_filter(
 );
 
 /**
- * Update messages.
+ * Update error flash messages.
  */
 add_filter(
 	'wc_add_to_cart_message_html',
@@ -253,6 +271,43 @@ add_filter(
 	},
 	10,
 	2
+);
+
+/**
+ * Displays a new field in the "Advanced" tab.
+ */
+add_action(
+	'woocommerce_product_options_advanced',
+	function () {
+		woocommerce_wp_checkbox(
+			array(
+				'label' => 'Allow sample',
+				'name'  => 'allow_sample',
+				'id'    => 'allow_sample',
+			)
+		);
+	}
+);
+
+/**
+ * Update 'allow_sample' meta key on product save.
+ */
+add_action(
+	'woocommerce_process_product_meta',
+	function ( $post_id ) {
+		if ( isset( $_POST['woocommerce_meta_nonce'] ) ) {
+			if ( ! wp_verify_nonce( sanitize_key( $_POST['woocommerce_meta_nonce'] ), 'woocommerce_save_data' ) ) {
+				exit;
+			}
+
+			$product = wc_get_product( $post_id );
+			$product->update_meta_data(
+				'allow_sample',
+				isset( $_POST['allow_sample'] ) ? 'yes' : 'no'
+			);
+			$product->save();
+		}
+	}
 );
 
 /**
