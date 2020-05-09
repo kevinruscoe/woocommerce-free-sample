@@ -17,7 +17,7 @@ Products:
 
 - Have an option to toggle if a sample is available (under advanced)
 
-Another few things:
+Anything else?
 
 - Upon deactivated the plugin, it'll remove the "sample product".
 
