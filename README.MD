@@ -2,26 +2,24 @@
 
 # What is this?
 
-Basically, it adds a button after the "add to cart" button that:
+TL;DR
 
-- Creates a (temporary) sample product, based on the current product
-- Adds it to the cart
-- Hides it from the admin-grid (to prevent noise)
+Simply put, it adds the ability to add a "sample product" to the cart, that is free.
+
+It adds a button after the "add to cart" button that adds a sample version of the product you're buying.
+
+How does it work?
+
+- Upon activation a "sample product" is created and hidden from the UI.
+- When a sample is added to the cart, it adds this "sample product" and updates it's name, image to match the base product.
 
 Products:
 
-- Have an option to toggle if a sample is available
-
-You can also:
-
-- Allow free samples upto an amount (i.e. you're allowed 5 samples for free)
-- Set a flat-rate fee for none-free samples (i.e. It's £5 for more than 5 samples)
+- Have an option to toggle if a sample is available (under advanced)
 
 Another few things:
 
-- If a customer removes/sets quantity to zero, it'll delete the sample from WordPress.
-- If an order is marked as "complete" or "cancelled", it'll also delete the samples from WordPress.
-- If a customer adds the same sample twice, they'll be told they're an idiot.
+- Upon deactivated the plugin, it'll remove the "sample product".
 
 ## Need this tweaking?
 
