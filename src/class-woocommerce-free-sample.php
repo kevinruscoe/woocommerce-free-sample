@@ -137,18 +137,17 @@ class WooCommerce_Free_Sample
                     'single_add_sample_to_cart_button button alt'
                 );
 
-				printf (
+				print sprintf (
                     "<button type='submit' name='add-sample-to-cart' class='%s' value='%s'>%s</button>",
 					esc_attr( $add_sample_button_classes ),
                     esc_html( wc_get_product()->get_id() ),
                     'Add Sample'
                 );
 
-				printf(
+				print sprintf(
                     "<input type='hidden' name='add-to-cart' value='%s'>",
                     esc_html( wc_get_product()->get_id() )
                 );
-
 			}
 		);
 
