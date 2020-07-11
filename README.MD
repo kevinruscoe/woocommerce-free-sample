@@ -8,7 +8,7 @@ Simply put, it adds the ability to add a "sample product" to the cart, that is f
 
 It adds a button after the "add to cart" button that adds a sample version of the product you're buying.
 
-How does it work?
+### How does it work?
 
 - Upon activation a "sample product" is created and hidden from the UI.
 - When a sample is added to the cart, it adds this "sample product" and updates it's name, image to match the base product.
