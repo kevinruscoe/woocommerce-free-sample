@@ -14,7 +14,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-include __DIR__ . '/src/class-woocommerce-free-sample.php';
+require __DIR__ . '/src/class-woocommerce-free-sample.php';
 
 $plugin = new WooCommerce_Free_Sample(__FILE__);
 

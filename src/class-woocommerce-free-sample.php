@@ -10,25 +10,9 @@ class WooCommerce_Free_Sample
 	{
 		$this->file = $file;
 
-		$this->loadDependencies();
-
 		// register plugin activation/deactivation hooks
 		register_activation_hook( $this->file, array( $this, 'activate' ) );
 		register_deactivation_hook( $this->file, array( $this, 'deactivate' ) );
-	}
-
-	/**
-	 * Load any additional resources (classes, helpers, etc).
-	 *
-	 * @return void
-	 */
-	private function loadDependencies()
-	{
-		$dependencies = array();
-
-		foreach ($dependencies as $dependency) {
-			include __DIR__ . DIRECTORY_SEPARATOR . $dependency;
-		}
 	}
 
 	/**
@@ -153,17 +137,18 @@ class WooCommerce_Free_Sample
                     'single_add_sample_to_cart_button button alt'
                 );
 
-				?>
-                <button
-                        type='submit'
-                        name="add-sample-to-cart"
-                        class="<?php print esc_attr( $add_sample_button_classes ) ?>"
-                        value="<?php print esc_html( wc_get_product()->get_id() ); ?>">
-                    Add Sample
-                </button>
+				printf (
+                    "<button type='submit' name='add-sample-to-cart' class='%s' value='%s'>%s</button>",
+					esc_attr( $add_sample_button_classes ),
+                    esc_html( wc_get_product()->get_id() ),
+                    'Add Sample'
+                );
 
-                <input type="hidden" name="add-to-cart" value="<?php print esc_html( wc_get_product()->get_id() ); ?>">
-				<?php
+				printf(
+                    "<input type='hidden' name='add-to-cart' value='%s'>",
+                    esc_html( wc_get_product()->get_id() )
+                );
+
 			}
 		);
 
@@ -320,7 +305,7 @@ class WooCommerce_Free_Sample
 			function ( $post_id ) {
 				if ( isset( $_POST['woocommerce_meta_nonce'] ) ) {
 					if ( ! wp_verify_nonce( sanitize_key( $_POST['woocommerce_meta_nonce'] ), 'woocommerce_save_data' ) ) {
-						exit;
+						return;
 					}
 
 					$product = wc_get_product( $post_id );
