@@ -1,4 +1,9 @@
 {
+    "name": "kevinruscoe/woocommerce-free-sample",
+    "description": "Allows a user to get a free sample of a product.",
+    "require": {
+        "php": "^7.3"
+    },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "*",
         "object-calisthenics/phpcs-calisthenics-rules": "*",
