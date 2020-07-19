@@ -1,6 +1,6 @@
 # WooCommerce Free Sample
 
-![alt text](logo.jpg?raw=true "WooCommerce Free Sample")
+![alt text](logo@2x.png?raw=true "WooCommerce Free Sample")
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/35a97946d4a9413d98e271ebf634824c)](https://www.codacy.com/app/kevdotbadger/woocommerce-request-sample-product?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=kevinruscoe/woocommerce-request-sample-product&amp;utm_campaign=Badge_Grade)
 
