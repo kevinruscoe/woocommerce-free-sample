@@ -6,6 +6,8 @@
  * Version: 2.0
  * Author: Kevin Ruscoe
  * Author URI: https://github.com/kevinruscoe
+ * Text Domain: woocommerce-free-sample
+ * Domain Path: /languages
  *
  * @package Woocommerce Free Sample
  */

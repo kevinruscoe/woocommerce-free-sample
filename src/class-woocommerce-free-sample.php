@@ -29,7 +29,7 @@ class WooCommerce_Free_Sample
 		if ( ! get_option( $this->sample_product_id_option_name ) ) {
 			// Create the product.
 			$sample = new WC_Product_Simple();
-			$sample->set_name( 'Sample Product' );
+			$sample->set_name( __( 'Sample Product', 'woocomerce_free_sample' ) );
 			$sample->set_sku( 'sample-product' );
 			$sample->set_catalog_visibility( 'hidden' );
 			$sample->set_price( 0 );
@@ -141,7 +141,7 @@ class WooCommerce_Free_Sample
 					"<button type='submit' name='add-sample-to-cart' class='%s' value='%s'>%s</button>",
 					esc_attr( $add_sample_button_classes ),
 					esc_html( wc_get_product()->get_id() ),
-					'Add Sample'
+					__( 'Add Sample', 'woocomerce_free_sample' )
 				);
 
 				print sprintf(
@@ -199,14 +199,16 @@ class WooCommerce_Free_Sample
 
 					if ( $base_product->is_visible() ) {
 						return sprintf(
-							"Free sample of '<a href='%s'>%s</a>'",
+							"%s '<a href='%s'>%s</a>'",
+							__( 'Free sample of', 'woocomerce_free_sample' ),
 							esc_url( $base_product->get_permalink() ),
 							$base_product->get_name()
 						);
 					}
 
 					return sprintf(
-						"Free sample of '%s'",
+						"%s '%s'",
+						__( 'Free sample of', 'woocomerce_free_sample' ),
 						$base_product->get_name()
 					);
 				}
@@ -269,7 +271,8 @@ class WooCommerce_Free_Sample
 			function( $message, $cart_item ) {
 				if ( isset( $cart_item['base_product_id'] ) ) {
 					return sprintf(
-						'Sample of %s',
+						'%s %s',
+						__( 'Free sample of', 'woocomerce_free_sample' ),
 						wc_get_product( $cart_item['base_product_id'] )->get_name()
 					);
 				}
@@ -288,7 +291,7 @@ class WooCommerce_Free_Sample
 			function () {
 				woocommerce_wp_checkbox(
 					array(
-						'label' => 'Allow sample',
+						'label' => __( 'Allow sample ', 'woocomerce_free_sample' ),
 						'name'  => 'allow_sample',
 						'id'    => 'allow_sample',
 					)
@@ -330,8 +333,12 @@ class WooCommerce_Free_Sample
 				$base_product = wc_get_product( $base_product_id );
 
 				$message = str_replace(
-					'Sample Product',
-					sprintf( 'Sample of %s', $base_product->get_name() ),
+					__( 'Sample Product', 'woocomerce_free_sample' ),
+					sprintf( 
+						'%s %s', 
+						__( 'Sample of', 'woocomerce_free_sample' ),
+						$base_product->get_name() 
+					),
 					$message
 				);
 			}
