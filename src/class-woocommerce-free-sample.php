@@ -23,7 +23,7 @@ class WooCommerce_Free_Sample
 	 */
 	public function activate()
 	{
-	    // Upon activating the plugin, add the sample product if it needs to be created.
+		// Upon activating the plugin, add the sample product if it needs to be created.
 
 		// Get the sample product.
 		if ( ! get_option( $this->sample_product_id_option_name ) ) {
@@ -54,7 +54,7 @@ class WooCommerce_Free_Sample
 	 */
 	public function deactivate()
 	{
-	    // Upon disabling the plugin, delete the sample product.
+		// Upon disabling the plugin, delete the sample product.
 
 		if ( get_option( $this->sample_product_id_option_name ) ) {
 			$sample_product = wc_get_product( (int) get_option( $this->sample_product_id_option_name ) );
@@ -123,7 +123,7 @@ class WooCommerce_Free_Sample
 
 		/**
 		 * WC now adds the action to the "add to cart" button, so we need a hidden field to mimic it's functionality.
-         * As well as add our new button.
+		 * As well as add our new button.
 		 */
 		add_action(
 			'woocommerce_after_add_to_cart_button',
@@ -133,21 +133,21 @@ class WooCommerce_Free_Sample
 				}
 
 				$add_sample_button_classes = apply_filters(
-                    'woocommerce_free_sample_add_sample_button_classes',
-                    'single_add_sample_to_cart_button button alt'
-                );
+					'woocommerce_free_sample_add_sample_button_classes',
+					'single_add_sample_to_cart_button button alt'
+				);
 
 				print sprintf (
-                    "<button type='submit' name='add-sample-to-cart' class='%s' value='%s'>%s</button>",
+					"<button type='submit' name='add-sample-to-cart' class='%s' value='%s'>%s</button>",
 					esc_attr( $add_sample_button_classes ),
-                    esc_html( wc_get_product()->get_id() ),
-                    'Add Sample'
-                );
+					esc_html( wc_get_product()->get_id() ),
+					'Add Sample'
+				);
 
 				print sprintf(
-                    "<input type='hidden' name='add-to-cart' value='%s'>",
-                    esc_html( wc_get_product()->get_id() )
-                );
+					"<input type='hidden' name='add-to-cart' value='%s'>",
+					esc_html( wc_get_product()->get_id() )
+				);
 			}
 		);
 
