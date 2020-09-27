@@ -1,13 +1,11 @@
 <?php
 
-class WooCommerce_Free_Sample
-{
+class WooCommerce_Free_Sample {
 	protected $file;
 
 	private $sample_product_id_option_name = 'sample_product_id';
 
-	public function __construct(string $file)
-	{
+	public function __construct(string $file) {
 		$this->file = $file;
 
 		// register plugin activation/deactivation hooks
@@ -52,8 +50,7 @@ class WooCommerce_Free_Sample
 	 *
 	 * @return void
 	 */
-	public function deactivate()
-	{
+	public function deactivate() {
 		// Upon disabling the plugin, delete the sample product.
 
 		if ( get_option( $this->sample_product_id_option_name ) ) {
@@ -69,8 +66,64 @@ class WooCommerce_Free_Sample
 	 *
 	 * @return void
 	 */
-	public function run()
-	{
+	public function run() {
+		/**
+		 * When passing cart items to order items, we need to repush meta data.
+		 * TODO: Use the meta tools on the product, so this is autopassed.
+		 */
+		add_action(
+			'woocommerce_new_order_item',
+			function( $item_id, $item, $order_id ) {
+				if ( isset( $item->legacy_values['base_product_id'] ) ) {
+					$item->add_meta_data(
+						'base_product_id',
+						$item->legacy_values['base_product_id']
+					);
+					$item->save();
+				}
+			},
+			20,
+			3
+		);
+
+		/**
+		 * Meta vales are shown on the frontend. Hide the base_product_id one.
+		 */
+		add_filter(
+			'woocommerce_order_item_get_formatted_meta_data',
+			function( $formatted_meta ) {
+				$formatted_meta = array_filter(
+					$formatted_meta,
+					function( $value ) {
+						return $value->key !== 'base_product_id';
+					}
+				);
+
+				return $formatted_meta;
+			},
+			10
+		);
+
+		add_action(
+			'woocommerce_order_item_name',
+			function( $item_name, $item ) {
+				$base_product_id = $item->get_meta( 'base_product_id' );
+
+				if ( $base_product_id ) {
+					$base_product = wc_get_product( $base_product_id );
+
+					return sprintf(
+						"Free sample of '%s'",
+						$base_product->get_name()
+					);
+				}
+
+				return $item_name;
+			},
+			10,
+			2
+		);
+
 		/**
 		 * On the admin grid, we need to hide the sample product.
 		 *
@@ -111,8 +164,10 @@ class WooCommerce_Free_Sample
 
 				global $current_screen;
 
-				if ( 'product' === $type && 'edit-product' === $current_screen->id ) {
-					$counts->publish--;
+				if ( $current_screen ) {
+					if ( 'product' === $type && 'edit-product' === $current_screen->id ) {
+						$counts->publish--;
+					}
 				}
 
 				return $counts;
@@ -137,7 +192,7 @@ class WooCommerce_Free_Sample
 					'single_add_sample_to_cart_button button alt'
 				);
 
-				print sprintf (
+				print sprintf(
 					"<button type='submit' name='add-sample-to-cart' class='%s' value='%s'>%s</button>",
 					esc_attr( $add_sample_button_classes ),
 					esc_html( wc_get_product()->get_id() ),
